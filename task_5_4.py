@@ -1,31 +1,42 @@
-# 2. Дан список чисел. Создайте список, в который попадают числа,
-#    описываемые возрастающую последовательность.
-#    Порядок элементов менять нельзя.
+# 4. Реализуйте RLE алгоритм: реализуйте модуль сжатия и восстановления данных.
+# Входные и выходные данные хранятся в отдельных текстовых файлах.
 
-from random import choices
+with open('5_RLE1_decoded.txt', 'r') as data:
+    my_text = data.read()
+
+def encode_rle(ss):
+    str_code = ''
+    prev_char = ''
+    count = 1
+    for char in ss:
+        if char != prev_char:
+            if prev_char:
+                str_code += str(count) + prev_char
+            count = 1
+            prev_char = char
+        else:
+            count += 1
+    return str_code
+
+            
+str_code = encode_rle(my_text)
+print(str_code)
+
+with open('42_RLE2_encoded.txt', 'r') as data:
+    my_text2 = data.read()
+
+def decoding_rle(ss:str):
+    count = ''
+    str_decode = ''
+    for char in ss:
+        if char.isdigit():
+            count += char 
+        else:
+            str_decode += char * int(count)
+            count = ''
+    return str_decode
+
+str_decode = decoding_rle(my_text2)
+print(str_decode)
 
 
-def sequ(num):
-    if num < 1:
-        return []
-    return choices(range(num * 2), k=num)
-
-
-def all_sets(num_list):
-    new_list = []
-    for k in range(len(num_list)):
-        n = num_list[k]
-        temporary = [n]
-        for i in range(k + 1, len(num_list)):
-            if num_list[i] > n:
-                n = num_list[i]
-                temporary.append(n)
-        if len(temporary) > 1:
-            new_list.append(temporary)
-
-    return new_list
-
-
-list_nums = sequ(int(input()))
-print(list_nums)
-print(all_sets(list_nums))
